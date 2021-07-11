@@ -14,51 +14,11 @@ export default class Welcome extends React.Component {
         lastName: "",
         phoneNumber: "",
         address: "",
+        docId: "",
         isModalVisible : false,
     }
 }
 
- handleEmail = (text) => {
-     this.setState({
-         password:text
-     });
- }
-
- handlePassword = (text) => {
-     this.setState({
-         email:text
-     });
- }
-
- handleFirstName = (text) => {
-   this.setState({
-     firstName:text
-   });
- }
- 
- handleLastName = (text) => {
-  this.setState({
-    lastName:text
-  });
-} 
-
-handlePhoneNumber = (text) => {
-  this.setState({
-    phoneNumber:text
-  });
-} 
-
-handleAddress = (text) => {
-  this.setState({
-    address:text
-  });
-} 
-
-handleConfirmPassword = (text) => {
-  this.setState({
-    confirmPassword:text
-  });
-}
 
   userSignup = (email,password,confirmPassword) => {
     if(password !== confirmPassword) {
@@ -67,13 +27,19 @@ handleConfirmPassword = (text) => {
       firebase.auth().createUserWithEmailAndPassword(email,password)
     .then(()  => {
       db.collection('users').add({
-        "FirstName":this.state.firstName,
-        "LastName":this.state.lastName,
-        "Contact":this.state.phoneNumber.trim(),
-        "Address":this.state.address,
-        "Email_Address":this.state.email,
-        "ProfileUpdated": false,
+        FirstName:this.state.firstName,
+        LastName:this.state.lastName,
+        Contact:this.state.phoneNumber.trim(),
+        Address:this.state.address,
+        Email_Address:this.state.email,
+        ProfileUpdated: false,
 })
+  db.collection('GoalsMade').add({
+    Email_Address: this.state.email,
+    GoalsMade: 0
+  })
+  
+
     return Alert.alert(
      'User Added Sucsessfully',
      "The user has sucsessfully registered.",
@@ -82,7 +48,7 @@ handleConfirmPassword = (text) => {
     ]
     );
   })
-    .catch(function(error) {
+    .catch((error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
       return Alert.alert(errorMessage);
@@ -98,7 +64,7 @@ handleConfirmPassword = (text) => {
     .catch((error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
-      Alert.alert(errorMessage)
+      return Alert.alert(errorMessage)
     })
   }
 
@@ -114,6 +80,7 @@ handleConfirmPassword = (text) => {
           <ScrollView style = {{width:'100%'}}>
             <KeyboardAvoidingView style = {styles.keyboardAvoidingView}>
                <Text style = {styles.modalTitle}> Signup now! </Text>
+            
               <TextInput 
                style = {styles.modalTextInput}
                placeholder = "First Name"
@@ -121,7 +88,11 @@ handleConfirmPassword = (text) => {
                multiline = {false}
                keyboardType = {"default"}
                keyboardAppearance = "light"
-               onChangeText = {this.handleFirstName}
+               onChangeText = {(text) => {
+                 this.setState({
+                   firstName: text
+                 })
+               }}
               />
                <TextInput 
                style = {styles.modalTextInput}
@@ -130,7 +101,11 @@ handleConfirmPassword = (text) => {
                multiline = {false}
                keyboardType = "default"
                keyboardAppearance = "light"
-               onChangeText = {this.handleLastName}
+               onChangeText = {(text) => {
+                 this.setState({
+                   lastName: text
+                 })
+               }}
               />
                <TextInput 
                style = {styles.modalTextInput}
@@ -140,7 +115,11 @@ handleConfirmPassword = (text) => {
                maxLength = {10}
                keyboardType = {'numeric'}
                keyboardAppearance = "light"
-               onChangeText = {this.handlePhoneNumber}
+               onChangeText = {(text) => {
+                 this.setState({
+                   phoneNumber: text
+                 })
+               }}
               />
                <TextInput 
                style = {styles.modalTextInput}
@@ -149,7 +128,11 @@ handleConfirmPassword = (text) => {
                multiline = {false}
                keyboardType = "default"
                keyboardAppearance = "light"
-               onChangeText = {this.handleAddress}
+               onChangeText = {(text) => {
+                 this.setState({
+                   Address: text
+                 })
+               }}
               />
               <TextInput 
                style = {styles.modalTextInput}
@@ -158,7 +141,11 @@ handleConfirmPassword = (text) => {
                multiline = {false}
                keyboardType = {"email-address"}
                keyboardAppearance = "light"
-               onChangeText = {this.handleEmail}
+               onChangeText = {(text) => {
+                this.setState({
+                 email: text
+                })
+               }}
               />
               <TextInput 
                style = {styles.modalTextInput}
@@ -167,7 +154,11 @@ handleConfirmPassword = (text) => {
                multiline = {false}
                secureTextEntry = {true}
                keyboardAppearance = "dark"
-               onChangeText = {this.handlePassword}
+               onChangeText = {(text) => {
+                 this.setState({
+                   password: text
+                 })
+               }}
               />
             
               <TextInput 
@@ -177,7 +168,11 @@ handleConfirmPassword = (text) => {
                multinline = {false}
                secureTextEntry = {true}
                keyboardAppearance = "dark"
-               onChangeText = {this.handleConfirmPassword}
+               onChangeText = {(text) => {
+                 this.setState({
+                   confirmPassword: text
+                 })
+               }}
               />
         
             <View style = {styles.modalContainer}>
@@ -190,11 +185,12 @@ handleConfirmPassword = (text) => {
             </View>
  
             <View style = {styles.modalContainer}>
-             <TouchableOpacity style = {styles.modalCancelButton} onPress = {() => {
+             <TouchableOpacity style = {styles.modalCancelButton}
+              onPress = {() => 
                this.setState({
                  modalVisible: false,
                })
-             }}>
+             }>
               <Text style = {styles.modalCancelText}> Back </Text>
              </TouchableOpacity>
             </View>
@@ -233,18 +229,26 @@ handleConfirmPassword = (text) => {
                style = {styles.emailInput}
                placeholder = "abc@example.com"
                placeholderTextColor =  'purple'
-               keyboardType = "email-address"
+               keyboardType = {'email-address'}
                keyboardAppearance = 'light'
-               onChangeText = {this.handleEmail}
+               onChangeText = {(text) => {
+                 this.setState({
+                   email: text
+                 })
+               }}
              /> 
              <TextInput 
               style = {styles.passwordInput}
               placeholder = "Password"
               placeholderTextColor = 'purple'
-              keyboardType = 'email-address'
+              keyboardType = {'default'}
               keyboardAppearance = 'light'
               secureTextEntry = {true}
-              onChangeText = {this.handlePassword}
+              onChangeText = {(text) => {
+                this.setState({
+                  password:text
+                })
+              }}
              />
   
              <TouchableOpacity style = {styles.loginButton} 
@@ -264,9 +268,7 @@ handleConfirmPassword = (text) => {
                  isModalVisible:true
                })
                }>
-              <Text style = {styles.welcomeText}>
-                Signup
-              </Text>
+              <Text style = {styles.welcomeText}> Signup </Text>
              </TouchableOpacity>
              </View> 
             </View>

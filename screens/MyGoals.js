@@ -1,78 +1,116 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text,TextInput, Alert, FlatList, ScrollView } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ListItem, Icon } from 'react-native-elements';
 import MyHeader from '../components/MyHeader';
 import db from '../config';
 import firebase from 'firebase';
+import { Touchable } from 'react-native';
 
 export default class MyGoals extends React.Component {
  constructor () {
   super();
   this.state = {
+    fullName: "Welcome, " + this.state.firstName + "" + this.state.lastName + "!",
     email: "",
-    goal1: "",
-    goal2: "", 
-    goal3: "",
-    goal4: "", 
-    goal5: "",
-    editable:false,
     docId: "",
+    allGoals : [],
+    editable:false,
   }
+  this.goalsRef = null;
  }
 
-handleAddedGoal = (text) => {
-  this.setState({
-    goal1:text,
-  })
-}
 
-handleEditedGoal = (text) => {
-    this.setState({
-      savedGoal:text,
-    })
-  }  
-
-getGoal = () => {
+getGoalsDetails = (email) => {
  this.setState({
   email: firebase.auth().currentUser.email,
  });
-
- var email = this.state.email;
 
  db.collection('users').where("Email_Address", "==", email).get()
  .then(snapshot => {
    snapshot.forEach(doc => {
      var data = doc.data();
      this.setState({
-       goal1: data.Goal-1,
-       goal2: data.Goal-2,
-       goal3: data.Goal-3,
-       goal4: data.Goal-4,
-       goal5: data.Goal-5,
+       fullName: data.FirstName + "" + data.LastName,
        docId: doc.id,
      })
    })
  })
 }
 
+getAllGoals = () => {
+ this.goalsRef = db.collection('GoalsMade').where("Email_Address", "==", this.state.email)
+  .onSnapshot((snapshot) => {
+    var allGoals = [];
+    snapshot.docs.map((doc) => {
+     var goal = doc.data()
+     goal["doc_id"] = doc.id
+     allGoals.push(goal);
+    })
+    this.setState({
+      allGoals: allGoals
+    })
+  })
+}
+
 removeGoal = () => {
-  var email = this.state.email; 
   var goal1 = this.state.goal1;
 
   Alert.alert("Are you sure you want to delete this goal?", "", [{text: "OK", onPress  : (
-    db.collection("users").doc(this.state.docId).where("Goal-1", "==", goal1).delete()
+    db.collection("users").doc(this.state.docId).where("goal-1", "==", goal1).delete()
   ) }]);
 }
 
-componentDidMount = () => {
-  this.getGoal();
+keyExtractor = (index) => index.toString();
+
+renderItem = (item, i) => {
+  <ListItem 
+   key = {i}
+   title = {item.GoalName}
+   titleStyle = {{color:"black", fontSize:25, fontWeight: "bold"}}
+   subtitle = {item.GoalDescription}
+   subtitleStyle = {{color:"gray", fontSize:15}}
+   leftComponent = {<Icon name = "books" type = "font-awesome" color = "#696969"/>}
+   rightComponent = {
+    <TouchableOpacity style = {[
+      styles.rightButton,
+      {
+        backgroundColor: item.GoalsViewed === true ? "green" : "red"
+      }
+    ]} 
+     onPress = {() => {
+       db.collection("GoalsMade").update({
+         GoalsViewed: true
+       })
+     }}
+    >
+     <Text style = {styles.rightButtonText}>  
+       {item.GoalsViewed === true ? "Edit Goal" : "View Goal" }
+     </Text>
+    </TouchableOpacity>}
+   
+   bottomDivider
+  />
 }
+
+componentDidMount = () => {
+  this.getGoalsDetails(this.state.email);
+  this.getAllGoals(this.state.email);
+}
+
+componentWillUnmount = () => {
+  this.goalsRef();
+}
+
+ 
 
     render() {
         return(
          <View>
           <ScrollView style = {{width:"100%"}}>
-           <MyHeader title  = "Set your own goal" navigation = {this.props.navigation} />
+           <MyHeader title  = "My goals!" navigation = {this.props.navigation} />
+
+           <Text style = {{fontSize: 25, color: "red", fontWeight: "bold"}}> {this.state.fullName} </Text>
+
           <TouchableOpacity style = {styles.addGoalButton} onPress = {() => {
             this.props.navigation.navigate('CreateGoals')
           }}> 
@@ -85,20 +123,25 @@ componentDidMount = () => {
             <Text style = {styles.removeGoalText}> Remove Goal </Text>    
           </TouchableOpacity>  
 
-          <TouchableOpacity style = {styles.changeGoalButton} onPress = {() => {
-             this.setState({editable:true});
-          }}> 
-            <Text style = {styles.changeGoalText}> Edit Goal </Text>    
-          </TouchableOpacity>  
-        
-          <TextInput 
-           placeholder = "Change Goal"
-           placeholderTextColor = "red"
-           keyboardType = {"default"}
-           editable = {this.state.editable}
-           onChangeText = {this.handleEditedGoal}
-           value = {this.state.savedGoal}
-          />
+          <View style = {{alignSelf:"center,"}}>
+            {
+            this.state.allGoals.length === 0 
+            ?(
+              <View style = {{flex:0.9}}>
+                 <Text style = {{fontSize:20, fontWeight: "300", color: "red"}}> 
+                   There are no goals made in this account
+                </Text> 
+              </View>
+             )
+             :(
+               <FlatList
+                keyExtractor = {this.keyExtractor}
+                data = {this.state.allGoals}
+                renderItem = {this.renderItem}
+               />
+             )
+            }
+          </View>
           </ScrollView> 
          </View>
         )
@@ -119,6 +162,12 @@ const styles = StyleSheet.create({
 
  },
  removeGoalText:{
+
+ },
+ rightButton:{
+
+ },
+ rightButtonText:{
 
  },
 });
