@@ -1,41 +1,22 @@
 import React from 'react';
-import {StyleSheet, Text, View } from 'react-native';
-import {createDrawerNavigator} from 'react-navigation-drawer';
+import {StyleSheet, Text} from 'react-native';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {AppTabNavigator} from'./components/AppTabNavigator';
+import { AppDrawerNavigator } from './components/AppDrawerNavigator';
 import Welcome from './screens/Welcome';
-import CreateGoals from './screens/CreateGoals';
-import Settings from './screens/Settings';
-
-import CustomSlideBarMenu from './components/CustomSlideBarMenu';
+import CreateGoals from './screens/Goals/CreateGoals';
 
 export default class App extends React.Component {
   render() {
-  return (
-    <View style={styles.container}>
-     <AppContainer/>
-    </View>
-  );
+   return (
+    <AppContainer/>
+   );
   }
 }
 
-const AppDrawerNavigator = createDrawerNavigator({
- Home:{
-   screen:AppTabNavigator
- },
- Settings:{
-   screen:Settings
- },
-},
- {
-  contentComponent: CustomSlideBarMenu
- },
-{
-  initialRouteName : 'Home',
-});
-
 const switchNavigator = createSwitchNavigator({
   WelcomeScreen:{screen:Welcome},
+  BottomTab: {screen: AppTabNavigator},
   CreateGoalsScreen:{screen:CreateGoals},
   DrawerNavigator:{screen:AppDrawerNavigator},
 });

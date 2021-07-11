@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal, ScrollView, KeyboardAvoidingView, Image} from 'react-native';
+import MyGoals from './Goals/MyGoals'
 import firebase from 'firebase';
 import db from '../config'
 
@@ -59,13 +60,13 @@ export default class Welcome extends React.Component {
   userLogin = (email,password) => {
     firebase.auth().signInWithEmailAndPassword(email,password)
     .then(() => {
-     this.props.navigation.navigate("MyGoals")
+     this.props.navigation.navigate('Home')
     })
     .catch((error) => {
       var errorCode = error.code;
       var errorMessage = error.message;
       return Alert.alert(errorMessage)
-    })
+    });
   }
 
   showModal = () => {

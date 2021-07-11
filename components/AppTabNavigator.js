@@ -1,24 +1,24 @@
 import React from 'react';
 import {Image} from 'react-native';
 import {createBottomTabNavigator} from 'react-navigation-tabs';
-import MyGoals from '../screens/MyGoals'
-import SharePlans from '../screens/sharePlans';
+import MyGoals from '../screens/Goals/MyGoals'
+import SharePlans from '../screens/SharePlans';
 import { StackNavigator } from './StackNavigator'; 
 
 export const AppTabNavigator = createBottomTabNavigator({
+  MyGoals:{
+    screen:MyGoals,
+    navigationOptions:{
+      tabBarIcon : <Image/>,
+      tabBarLabel : "Customize your goals"
+    }
+ },
   plans:{
    screen: StackNavigator,
     navigationOptions: {
      tabBarIcon: <Image />,
-     tabBarLabel: "Schedule plans"   
+     tabBarLabel: "Create your own plans"   
    }
-  },
-  MyGoals:{
-      screen:MyGoals,
-      navigationOptions:{
-        tabBarIcon : <Image/>,
-        tabBarLabel : "Customize your goals"
-      }
   },
   SharePlans:{
     screen:SharePlans,

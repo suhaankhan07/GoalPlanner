@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
 import firebase from 'firebase';
-import db from '../config';
+import db from '../../config';
 
 export default class CreateGoals extends React.Component {
  constructor () {

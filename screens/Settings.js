@@ -37,11 +37,11 @@ export default class Settings extends React.Component {
 
   updateUserDetails = () => {
     db.collection('users').doc(this.state.docId).update({
-      "FirstName" : this.state.firstName,
-      "LastName" : this.state.lastName,
-      "Contact" : this.state.contact,
-      "Address" : this.state.mailingAddress,
-      "ProfileUpdated": this.state.profileUpdated,
+      FirstName : this.state.firstName,
+      LastName : this.state.lastName,
+      Contact : this.state.contact,
+      Address : this.state.mailingAddress,
+      ProfileUpdated: this.state.profileUpdated,
     })
 
   return Alert.alert(

@@ -1,8 +1,8 @@
 import React from 'react';
 import { View, StyleSheet, TouchableOpacity, Text,TextInput, Alert, FlatList, ScrollView } from 'react-native';
 import { ListItem, Icon } from 'react-native-elements';
-import MyHeader from '../components/MyHeader';
-import db from '../config';
+import MyHeader from '../../components/MyHeader';
+import db from '../../config';
 import firebase from 'firebase';
 import { Touchable } from 'react-native';
 
