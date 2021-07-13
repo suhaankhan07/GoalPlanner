@@ -77,7 +77,7 @@ export default class Welcome extends React.Component {
        visible = {this.state.isModalVisible}
        >
        
-        <View style = {{alignSelf:'center',justifyContent:'center',flex:1,backgroundColor:'lightblue'}}>
+        <View style = {styles.modalContainer}>
           <ScrollView style = {{width:'100%'}}>
             <KeyboardAvoidingView style = {styles.keyboardAvoidingView}>
                <Text style = {styles.modalTitle}> Signup now! </Text>
@@ -189,7 +189,7 @@ export default class Welcome extends React.Component {
              <TouchableOpacity style = {styles.modalCancelButton}
               onPress = {() => 
                this.setState({
-                 modalVisible: false,
+                 isModalVisible: false,
                })
              }>
               <Text style = {styles.modalCancelText}> Back </Text>
@@ -362,7 +362,7 @@ const styles = StyleSheet.create({
       margin:38
     },
     modalTextInput:{
-      width:'75%',
+      width:'20%',
       height:35,
       alignSelf:'center',
       justifyContent:'center',
@@ -374,10 +374,17 @@ const styles = StyleSheet.create({
       backgroundColor:'white'
     },
     modalContainer:{
-     justifyContent:'center',
-     alignSelf:'center',
      flex:1,
-     marginTop:10,
+     justifyContent:'center',
+     alignItems:'center',
+     alignSelf: 'center',
+     backgroundColor:"lightblue",
+     width:360,
+     height:50,
+     marginRight: 520,
+     marginLeft : 440,
+     marginTop: 10,
+     marginBottom: 10,
     },
     modalRegisterButton:{
      backgroundColor:'white',
@@ -385,6 +392,7 @@ const styles = StyleSheet.create({
      justifyContent:'center',
      width:150,
      height:40,
+     marginRight: -85,
      borderColor:'black',
      borderWidth:2,
      borderRadius:15,
@@ -404,6 +412,7 @@ const styles = StyleSheet.create({
       justifyContent:'center',
       width:150,
       height:40,
+      marginRight : -90,
       borderColor:'black',
       borderWidth:2,
       borderRadius:15

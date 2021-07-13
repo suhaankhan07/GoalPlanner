@@ -2,9 +2,11 @@
   "expo": {
     "name": "BudgetApp",
     "slug": "BudgetApp",
-    "version": "1.0.0",
-    "orientation": "portrait",
-    "splash": {
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -21,8 +23,5 @@
       "adaptiveIcon": {
         "backgroundColor": "#FFFFFF"
       }
-    },
-    "web": {
     }
   }
-}

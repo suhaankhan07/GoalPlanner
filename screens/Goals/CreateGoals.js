@@ -7,7 +7,7 @@ export default class CreateGoals extends React.Component {
  constructor () {
   super();
   this.state  = {
-    uerId: firebase.auth().currentUser.email,
+    userId: firebase.auth().currentUser.email,
     goalName: "",
     goalDescription: "",
     timeSpendedOnGoalPerWeek: "",
@@ -19,15 +19,15 @@ export default class CreateGoals extends React.Component {
    return Math.random().toString(7).substring(36)
  }
 
- submitGoal = (goalName, goalDescription, goalTime) => {
-  var userId = this.state.userId;
+ submitGoal = (userId,goalName, goalDescription, goalTime) => {
   var randomRequestId = this.createUniqueId();
+  
   db.collection('GoalsMade').where('Email_Address', "==", userId).add({
-   GoalName: goalName,
-   GoalDescription: goalDescription,
-   GoalTime: goalTime,
-   GoalsViewed: false,
-   RequestID: randomRequestId,
+   "GoalName": goalName,
+   "GoalDescription": goalDescription,
+   "GoalTime": goalTime,
+   "GoalsViewed": false,
+   "RequestID": randomRequestId,
   }),
   db.collection('GoalsMade').where('Email_Address', "==", userId).update({
    "GoalsMade": firebase.firestore.FieldValue.increment(1)
@@ -72,7 +72,7 @@ export default class CreateGoals extends React.Component {
 
        <View style = {{alignSelf: "center", flex:1, justifyContent: "center"}}>
         <TouchableOpacity style = {styles.submitButton} onPress = {() => {
-          this.submitGoal(this.state.goalName, this.state.goalDescription, this.state.timeSpendedOnGoalPerWeek);
+          this.submitGoal(this.state.userId, this.state.goalName, this.state.goalDescription, this.state.timeSpendedOnGoalPerWeek);
         }}>
           <Text style = {styles.submitText}> Submit </Text>
         </TouchableOpacity>

@@ -4,13 +4,12 @@ import { ListItem, Icon } from 'react-native-elements';
 import MyHeader from '../../components/MyHeader';
 import db from '../../config';
 import firebase from 'firebase';
-import { Touchable } from 'react-native';
 
 export default class MyGoals extends React.Component {
  constructor () {
   super();
   this.state = {
-    fullName: "Welcome, " + this.state.firstName + "" + this.state.lastName + "!",
+    fullName: "",
     email: "",
     docId: "",
     allGoals : [],
@@ -62,7 +61,7 @@ removeGoal = () => {
 
 keyExtractor = (index) => index.toString();
 
-renderItem = (item, i) => {
+renderItem = ({item, i}) => {
   <ListItem 
    key = {i}
    title = {item.GoalName}
