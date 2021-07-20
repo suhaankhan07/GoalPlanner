@@ -95,14 +95,6 @@ const styles = StyleSheet.create({
  backTextWhite: {
     color: '#FFF',
 },
-rowFront: {
-    alignItems: 'center',
-    backgroundColor: '#CCC',
-    borderBottomColor: 'black',
-    borderBottomWidth: 1,
-    justifyContent: 'center',
-    height: 50,
-},
 rowBack: {
     alignItems: 'center',
     backgroundColor: '#DDD',

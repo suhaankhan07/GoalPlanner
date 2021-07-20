@@ -1,7 +1,9 @@
 import React from 'react';
 import { View, TouchableOpacity, StyleSheet, TextInput,Text,Alert } from 'react-native';
+import MyHeader from '../components/MyHeader';
 import db from '../config';
 import firebase from 'firebase';
+import { TouchableHighlightBase } from 'react-native';
 
 export default class Settings extends React.Component {
     constructor () {
@@ -24,7 +26,7 @@ export default class Settings extends React.Component {
      snapshot.forEach(doc => {
       var data = doc.data();
       this.setState({
-        email: data.Email-Address,
+        email: data.Email_Address,
         firstName: data.FirstName,
         lastName: data.LastName,
         contact: data.Contact,
@@ -59,10 +61,13 @@ export default class Settings extends React.Component {
     render() {
      return(
       <View>
+         <View>
+           <MyHeader title = "Settings" navigation = {this.props.navigation}/>
+         </View>
           <TouchableOpacity style = {styles.editGoalButton}
-          onPress = {() => {
-            this.props.navigation.navigate('MyGoals')
-          }}>  
+            onPress = {() => {
+             this.props.navigation.navigate('MyGoals')
+            }}>  
               <Text> Edit Goals </Text>
           </TouchableOpacity>
 

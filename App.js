@@ -1,10 +1,10 @@
 import React from 'react';
-import {StyleSheet, Text} from 'react-native';
 import {createAppContainer, createSwitchNavigator} from 'react-navigation';
 import {AppTabNavigator} from'./components/AppTabNavigator';
 import {AppDrawerNavigator} from './components/AppDrawerNavigator';
-import Welcome from './screens/Welcome';
+import SignupLogin from './screens/SignupLogin';
 import CreateGoals from './screens/Goals/CreateGoals';
+import GoalsScreen from './screens/Goals/GoalsScreen';
 
 export default class App extends React.Component {
   render() {
@@ -15,19 +15,12 @@ export default class App extends React.Component {
 }
 
 const switchNavigator = createSwitchNavigator({
-  WelcomeScreen:{screen:Welcome},
+  SignupLogin: {screen: SignupLogin},
   BottomTab: {screen: AppTabNavigator},
-  CreateGoalsScreen:{screen:CreateGoals},
   DrawerNavigator:{screen:AppDrawerNavigator},
+  CreateGoalsScreen:{screen:CreateGoals},
+  GoalsScreen: {screen:GoalsScreen},
 });
 
 const AppContainer = createAppContainer(switchNavigator);
-
-const styles = StyleSheet.create({
-  container:{
-    flex:1,
-    justifyContent:'center',
-    alignSelf:'center',
-  }
-})
 

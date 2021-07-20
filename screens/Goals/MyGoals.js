@@ -73,17 +73,15 @@ renderItem = ({item, i}) => {
     <TouchableOpacity style = {[
       styles.rightButton,
       {
-        backgroundColor: item.GoalsViewed === true ? "green" : "red"
+        backgroundColor: item.GoalA === true ? "green" : "red"
       }
     ]} 
      onPress = {() => {
-       db.collection("GoalsMade").update({
-         GoalsViewed: true
-       })
+       this.props.navigation.navigate("GoalsScreen")
      }}
     >
      <Text style = {styles.rightButtonText}>  
-       {item.GoalsViewed === true ? "Edit Goal" : "View Goal" }
+       {item.GoalAcheived === true ? "Goal Acheived" : "Working on goal" }
      </Text>
     </TouchableOpacity>}
    
@@ -106,7 +104,7 @@ componentWillUnmount = () => {
         return(
          <View>
           <ScrollView style = {{width:"100%"}}>
-           <MyHeader title  = "My goals!" navigation = {this.props.navigation} />
+           <MyHeader title  = "My Goals!" navigation = {this.props.navigation} />
 
            <Text style = {{fontSize: 25, color: "red", fontWeight: "bold"}}> {this.state.fullName} </Text>
 
@@ -148,9 +146,6 @@ componentWillUnmount = () => {
 }
 
 const styles = StyleSheet.create({
- addInput:{
-
- },
  addGoalButton:{
 
  },

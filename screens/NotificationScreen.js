@@ -62,7 +62,7 @@ export default class Notification extends React.Component {
   return(
    <View style = {styles.container}>
     <View style = {{flex:1}}>
-     <MyHeader title = {"Notifications"} navigation = {this.props.navigation}/>
+     <MyHeader title = "Notifications" navigation = {this.props.navigation}/>
     </View>
     {
      this.allNotifications.length === 0 
